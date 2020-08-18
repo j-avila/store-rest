@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResources([
     "products" => "ProductsController",
-    "carts" => "CartsController",
+    "carts/{id}" => "CartsController",
     "products_cart" => "ProductCartsController"
 ]);
+
+
+// Route::get('carts/{id}', function($id){
+//     dd($id);
+// });

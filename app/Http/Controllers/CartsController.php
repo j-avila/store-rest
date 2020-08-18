@@ -12,10 +12,20 @@ class CartsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id = null)
     {
-        $cart = Carts::create($request->all());
-        return cart;
+        if($id)
+        {
+            $cart = array(
+                'cart' => Carts::where('id', $id)->firstOrFail(),
+                'product_carts' => product_carts::where('cart_id', $id)->firstOrFail()
+            );
+            return $cart;
+
+        } else {
+            $cart = Carts::all();
+            return $cart;
+        }
     }
 
     /**
