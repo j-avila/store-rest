@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\product_carts;
+use App\carts;
 use Illuminate\Http\Request;
 
 class ProductCartsController extends Controller
@@ -47,9 +48,10 @@ class ProductCartsController extends Controller
      * @param  \App\product_carts  $product_carts
      * @return \Illuminate\Http\Response
      */
-    public function show(product_carts $product_carts)
+    public function show(product_carts $product_carts, $id)
     {
-        //
+        $cart = Carts::where('id', $id)->firstOrFail();
+        return $cart;
     }
 
     /**
@@ -73,8 +75,11 @@ class ProductCartsController extends Controller
     public function update(Request $request, $id)
     {
         $products_cart = product_carts::find($id);
-        $products_cart->total_price = $request.get('total');
-        $products_cart->products = $request.get('products');
+
+        $products_cart->cart_id = $request->get('cart_id');
+        $products_cart->products = $request->get('products');
+        $products_cart->save();
+        return $products_cart;
     }
 
     /**

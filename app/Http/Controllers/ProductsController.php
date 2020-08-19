@@ -46,9 +46,10 @@ class ProductsController extends Controller
      * @param  \App\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function show(Products $products)
+    public function show(Products $products, $id)
     {
-        //
+        $product = Products::where('id', $id)->firstOrFail();
+        return $product;
     }
 
     /**

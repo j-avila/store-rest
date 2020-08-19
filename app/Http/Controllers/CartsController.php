@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\carts;
 use Illuminate\Http\Request;
+use App\product_carts;
 
 class CartsController extends Controller
 {
@@ -12,20 +13,10 @@ class CartsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id = null)
+    public function index()
     {
-        if($id)
-        {
-            $cart = array(
-                'cart' => Carts::where('id', $id)->firstOrFail(),
-                'product_carts' => product_carts::where('cart_id', $id)->firstOrFail()
-            );
-            return $cart;
-
-        } else {
-            $cart = Carts::all();
-            return $cart;
-        }
+        $cart = Carts::all();
+        return $cart;
     }
 
     /**
@@ -46,7 +37,10 @@ class CartsController extends Controller
      */
     public function store(Request $request)
     {
-        $cart = Carts::create($request->all());
+        $cart = array(
+            'cart' => Carts::create($request->all()),
+            'product_carts' => product_carts::where('cart_id')
+        );
         return $cart;
     }
 
@@ -56,9 +50,14 @@ class CartsController extends Controller
      * @param  \App\carts  $carts
      * @return \Illuminate\Http\Response
      */
-    public function show(carts $carts)
+    public function show(carts $carts, $id)
     {
-        //
+        $cart = array(
+            'cart' => Carts::where('id', $id)->firstOrFail(),
+            'products_list' => product_carts::where('cart_id', $id)->get()
+        );
+
+        return $cart;
     }
 
     /**
@@ -82,10 +81,10 @@ class CartsController extends Controller
     public function update(Request $request, $id)
     {
         $cart = Carts::find($id);
+        $cart->total_price = $request->get('total_price');
         $cart->status = $request->get('status');
         $cart->save();
-        return $cart;
-
+        return  $cart;
     }
 
     /**

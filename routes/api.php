@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::apiResources([
     "products" => "ProductsController",
-    "carts/{id}" => "CartsController",
-    "products_cart" => "ProductCartsController"
+    "carts" => "CartsController",
+    "products_cart" => "ProductCartsController",
 ]);
 
+Route::get("carts/{cart}", "CartsController@show");
+Route::get("products/{id}", "ProductsController@show");
+Route::get("products_cart/{id}", "ProductCartsController@show");
 
-// Route::get('carts/{id}', function($id){
-//     dd($id);
-// });
+Route::patch("carts/{cart}", "CartsController@update");
+Route::patch("products_cart/{id}", "ProductCartsController@update");

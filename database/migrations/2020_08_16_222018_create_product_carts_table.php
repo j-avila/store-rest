@@ -17,7 +17,6 @@ class CreateProductCartsTable extends Migration
             $table->id();
             $table->integer('cart_id')->nullable();
             $table->json('products')->default('vacio');
-            $table->integer('total_price')->default(0);
             $table->timestamps();
 
             $table->foreign('cart_id')->references('id')->on('Carts')
